@@ -11,3 +11,4 @@ $feeds = array(
 	"https://tokyoma.de/rss.xml"
 );
 $footer = "I really 🧡 <a href='https://www.paypal.com/paypalme/dmpop'>coffee</a>";
+?>

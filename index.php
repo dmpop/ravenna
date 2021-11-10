@@ -1,5 +1,6 @@
 <?php
 include('config.php');
+include 'inc/parsedown.php';
 ?>
 
 <html lang="en" data-theme="<?php echo $theme; ?>">
@@ -22,7 +23,6 @@ include('config.php');
 		<h1 style="margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
 		<p>
 			<?php echo $intro; ?>
-			<img style="margin-top: 1em; margin-bottom: 1em; border-radius: 5px;" src="https://source.unsplash.com/daily">
 		</p>
 	</div>
 	<p id="geolocation"></p>
@@ -104,6 +104,15 @@ include('config.php');
 		}
 		?>
 	</ul>
+	<?php
+	if (file_exists('note.md')) {
+		echo "<h3>🗒️ Notes</h3>";
+		echo "<hr>";
+		$note = file_get_contents('note.md');
+		$Parsedown = new Parsedown();
+		echo $Parsedown->text($note);
+	}
+	?>
 	<h3>🔥 Feeds</h3>
 	<hr>
 	<?php
