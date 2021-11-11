@@ -111,20 +111,23 @@ include 'inc/parsedown.php';
 		$note = file_get_contents('note.md');
 		$Parsedown = new Parsedown();
 		echo $Parsedown->text($note);
+		echo "<div class='text-center'><button onclick=\"location.href='edit.php'\">Edit</button></div>";
 	}
 	?>
 	<h3>🔥 Feeds</h3>
-	<hr>
+	<hr style="margin-bottom: 1em;">
 	<?php
 	$array_length = count($feeds);
 	for ($i = 0; $i < $array_length; $i++) {
+		echo "<details>";
 		$rss = simplexml_load_file($feeds[$i]);
-		echo '<h4>' . $rss->channel->title . '</h4>';
+		echo '<summary>' . $rss->channel->title . '</summary>';
 		echo "<ul>";
 		foreach ($rss->channel->item as $item) {
 			echo '<li style="font-size: 85%"><a href="' . $item->link . '">' . $item->title . "</a></li>";
 		}
 		echo "</ul>";
+		echo "</details>";
 	}
 	?>
 	<hr>

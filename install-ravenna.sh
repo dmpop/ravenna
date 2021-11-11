@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
-if [ $(lsb_release -si) != "Ubuntu" ]; then
- echo "This doesn't seem to be an Ubuntu-based system."
- exit 1
+if [ -x "$(command -v apt)" ]; then
+        echo "Looks like it's not an Ubuntu- or Debian-based system."
+        exit 1
 fi
 
 if [ "$(whoami)" != "root" ]; then
- echo "You must run this script as root"
- exit 1
+        echo "You must run this script as root"
+        exit 1
 fi
 
 apt update
@@ -31,9 +31,8 @@ mkdir /etc/apache2/certificate
 cd /etc/apache2/certificate
 openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out apache-certificate.crt -keyout apache.key
 
-
 mv /etc/apache2/sites-enabled/000-default.conf /etc/apache2/sites-enabled/000-default.conf.old
-cat <<EOF > /etc/apache2/sites-enabled/000-default.conf
+cat <<EOF >/etc/apache2/sites-enabled/000-default.conf
 <VirtualHost *:80>
         RewriteEngine On
         RewriteCond %{HTTPS} !=on
