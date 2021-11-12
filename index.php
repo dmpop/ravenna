@@ -80,7 +80,7 @@ include 'inc/parsedown.php';
 		for ($i = 0; $i <= 6; $i++) {
 			echo "<tr>";
 			echo "<td>";
-			echo ' <span style="color: gray;">' . date("l", strtotime("+ $i day")) . ':</span> ';
+			echo ' <span style="color: gray;">' . date("D", strtotime("+ $i day")) . ':</span> ';
 			echo "</td>";
 			echo "<td style='text-align: left'>";
 			echo "<span style='color: #03a9f4;'>" . round($data['list'][$i]['temp']['day'], 0) . "°C</span> ";
@@ -111,6 +111,7 @@ include 'inc/parsedown.php';
 	<input type="radio" name="tabs" id="tabthree">
 	<label for="tabthree">🔥 Feeds</label>
 	<div class="tab">
+		<div style="margin-bottom: 1.5em;"></div>
 		<?php
 		$array_length = count($feeds);
 		for ($i = 0; $i < $array_length; $i++) {
