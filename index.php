@@ -53,7 +53,7 @@ include 'inc/parsedown.php';
 				x.innerHTML = "Geolocation is not supported.";
 			}
 		}
-
+		
 		function currentPosition(position) {
 			document.cookie = "posLat = ; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 			document.cookie = "posLon = ; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
@@ -128,19 +128,31 @@ include 'inc/parsedown.php';
 		?>
 	</div>
 	<?php
-	if (file_exists('note.md')) {
-		echo '<input type="radio" name="tabs" id="tabfour">';
-		echo '<label for="tabfour">🗒️ Notes</label>';
-		echo '<div class="tab">';
-		$note = file_get_contents('note.md');
-		$Parsedown = new Parsedown();
-		echo $Parsedown->text($note);
-		echo "<div class='text-center'><button onclick=\"location.href='edit.php'\">Edit</button></div>";
-		echo '</div>';
+	if (!is_file('note.md')) {
+		$text = "Notes go here. [Markdown](https://www.markdownguide.org/) **is** _supported_.";
+		file_put_contents('note.md', $text);
 	}
+	echo '<input type="radio" name="tabs" id="tabfour">';
+	echo '<label for="tabfour">🗒️ Notes</label>';
+	echo '<div class="tab">';
+	$note = file_get_contents('note.md');
+	$Parsedown = new Parsedown();
+	echo $Parsedown->text($note);
+	echo "<div class='text-center'><button onclick=\"location.href='edit.php'\">Edit</button></div>";
+	echo '</div>';
 	?>
+	<input type="radio" name="tabs" id="tabfive">
+	<label for="tabfive">📷 Photo of the day</label>
+	<div class="tab">
+		<div style="margin-top: .5em;"></div>
+		<?php
+		$request = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+		$response = file_get_contents($request);
+		$data = json_decode($response, true);
+		echo "<img style='border-radius: 5px;' src='https://bing.com" . $data['images'][0]['url'] . "' />";
+		?>
+	</div>
 </div>
-
 <p class="text-center"><?php echo $footer ?></p>
 </body>
 
