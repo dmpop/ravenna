@@ -3,7 +3,7 @@ $theme = "dark";
 $title = "Ravenna";
 $password = "monkey";
 $intro = "This is <a href='https://github.com/dmpop/ravenna'>Ravenna</a>";
-$key = "f2871771abe7535464065759cf85bd3c";
+$key = "";
 $links = array(
 	array('https://tokyoma.de/', 'Tōkyō Made'),
 	array('https://github.com/dmpop', 'GitHub')

@@ -80,7 +80,7 @@ include 'inc/parsedown.php';
 	setcookie("posLon", "", time() - 3600);
 	$lat = $_COOKIE['posLat'];
 	$lon = $_COOKIE['posLon'];
-	if (!empty($lat) && !empty($lon)) {
+	if (!empty($lat) && !empty($lon) && !empty($key)) {
 		echo '<input type="radio" name="tabs" id="weather">';
 		echo '<label for="weather">🌤️ Weather</label>';
 		echo '<div class="tab">';
