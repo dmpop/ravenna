@@ -61,19 +61,32 @@ include 'inc/parsedown.php';
 			document.cookie = "posLon = " + position.coords.longitude;
 		}
 	</script>
+
+<div class="tabs">
+<input type="radio" name="tabs" id="potd" checked="checked">
+	<label for="potd">🖼️ Photo of the day</label>
+	<div class="tab">
+		<div style="margin-top: .5em;"></div>
+		<?php
+		$request = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+		$response = file_get_contents($request);
+		$data = json_decode($response, true);
+		echo "<img style='border-radius: 5px;' src='https://bing.com" . $data['images'][0]['url'] . "' />";
+		?>
+	</div>
+	
 	<?php
 	setcookie("posLat", "", time() - 3600);
 	setcookie("posLon", "", time() - 3600);
 	$lat = $_COOKIE['posLat'];
 	$lon = $_COOKIE['posLon'];
 	if (!empty($lat) && !empty($lon)) {
+		echo '<input type="radio" name="tabs" id="weather">';
+		echo '<label for="weather">🌤️ Weather</label>';
+		echo '<div class="tab">';
 		$request = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=$lat&lon=$lon&units=metric&cnt=7&lang=en&units=metric&cnt=7&appid=$key";
 		$response = file_get_contents($request);
 		$data = json_decode($response, true);
-		echo '<div class="tabs">';
-		echo '<input type="radio" name="tabs" id="tabone" checked="checked">';
-		echo '<label for="tabone">🌤️ Weather</label>';
-		echo '<div class="tab">';
 		echo "<h3>" . $data['city']['name'] . "</h3>";
 		echo "<hr>";
 		echo "<table style='margin-top: 1.5em;'>";
@@ -96,8 +109,8 @@ include 'inc/parsedown.php';
 		echo '</div>';
 	}
 	?>
-	<input type="radio" name="tabs" id="tabtwo">
-	<label for="tabtwo">🔗 Links</label>
+	<input type="radio" name="tabs" id="links">
+	<label for="links">🔗 Links</label>
 	<div class="tab">
 		<ul>
 			<?php
@@ -108,8 +121,8 @@ include 'inc/parsedown.php';
 			?>
 		</ul>
 	</div>
-	<input type="radio" name="tabs" id="tabthree">
-	<label for="tabthree">🔥 Feeds</label>
+	<input type="radio" name="tabs" id="rss">
+	<label for="rss">🔥 RSS feeds</label>
 	<div class="tab">
 		<div style="margin-bottom: 1.5em;"></div>
 		<?php
@@ -132,8 +145,8 @@ include 'inc/parsedown.php';
 		$text = "Notes go here. [Markdown](https://www.markdownguide.org/) **is** _supported_.";
 		file_put_contents('note.md', $text);
 	}
-	echo '<input type="radio" name="tabs" id="tabfour">';
-	echo '<label for="tabfour">🗒️ Notes</label>';
+	echo '<input type="radio" name="tabs" id="notes">';
+	echo '<label for="notes">🗒️ Notes</label>';
 	echo '<div class="tab">';
 	$note = file_get_contents('note.md');
 	$Parsedown = new Parsedown();
@@ -141,17 +154,6 @@ include 'inc/parsedown.php';
 	echo "<div class='text-center'><button onclick=\"location.href='edit.php'\">Edit</button></div>";
 	echo '</div>';
 	?>
-	<input type="radio" name="tabs" id="tabfive">
-	<label for="tabfive">📷 Photo of the day</label>
-	<div class="tab">
-		<div style="margin-top: .5em;"></div>
-		<?php
-		$request = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
-		$response = file_get_contents($request);
-		$data = json_decode($response, true);
-		echo "<img style='border-radius: 5px;' src='https://bing.com" . $data['images'][0]['url'] . "' />";
-		?>
-	</div>
 </div>
 <p class="text-center"><?php echo $footer ?></p>
 </body>
