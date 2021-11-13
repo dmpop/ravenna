@@ -1,24 +1,18 @@
 # Ravenna
 
-Ravenna lets you transform a regular Debian or Ubuntu machine into an Apache-based server with PHP complete with a self-signed certificate.
+Ravenna is a configurable landing page. It acts as a simple dashboard that display the following information:
 
-Ravenna includes two parts:
-
-- a shell script that installs and configures the required components
-- a configurable landing page
-
-The landing page acts as a simple dashboard that display the following information:
-
-- random photo from Unsplash
+- basic system info (CPU load and RAM)
+- Bing's photo of the day
 - current location (on Android and iOS the link opens in the default map app)
 - 7-day weather forecast
   - temperature
   - conditions
   - wind speed
   - sunrise and sunset
-- basic system info (CPU load and RAM)
 - links
 - RSS feeds
+- notes
 
 ## Author
 
