@@ -158,7 +158,7 @@ include 'inc/parsedown.php';
 	<input type="radio" name="tabs" id="custom_tab">
 	<label for="custom_tab">☕ Custom tab</label>
 	<div class="tab">
-		Content goes here.
+		{CONTENT}
 	</div>
 Custom tab template END -->
 </div>
