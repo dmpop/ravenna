@@ -14,7 +14,7 @@ include 'inc/parsedown.php';
 	<link rel="shortcut icon" href="favicon.png" />
 	<link rel="stylesheet" href="css/classless.css">
 	<link rel="stylesheet" href="css/tabbox.css">
-	<link rel="stylesheet" href="css/styles.scss">
+	<link rel="stylesheet" href="css/styles.css">
 	<link rel="stylesheet" href="css/themes.css">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -113,7 +113,7 @@ include 'inc/parsedown.php';
 		<input type="radio" name="tabs" id="links">
 		<label for="links">🔗 Links</label>
 		<div class="tab">
-			<div class="grid" style="margin-top: 1em; margin-bottom: 1em;">
+			<div class="grid" style="margin-top: 2em;">
 				<?php
 				foreach ($links as $link) {
 					echo '<div><figure class="text-center">';
