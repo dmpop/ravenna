@@ -117,7 +117,7 @@ include 'inc/parsedown.php';
 				<?php
 				foreach ($links as $link) {
 					echo '<div><figure class="text-center">';
-					echo '<a href="' . $link[0] . '"><img src="' . $link[1] . '" alt="' . $link[2] . '" height=64></a>';
+					echo '<a href="' . $link[0] . '" target="_blank"><img src="' . $link[1] . '" alt="' . $link[2] . '" height=64></a>';
 					echo '<figcaption>'  . $link[2] . '</figcaption>';
 					echo '</figure></div>';
 				}
