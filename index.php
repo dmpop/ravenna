@@ -135,16 +135,16 @@ include 'inc/parsedown.php';
 				$xml = simplexml_load_file(str_replace(PHP_EOL, "", $feeds[$i]));
 				$root_element_name = $xml->getName();
 				if ($root_element_name  == 'rss') {
-					echo '<summary>' . $xml->channel->title . '</summary>';
+					echo '<summary>' . htmlspecialchars($xml->channel->title) . '</summary>';
 					echo "<ul>";
 					foreach ($xml->channel->item as $item) {
-						echo '<li style="font-size: 85%"><a href="' . $item->link . '">' . $item->title . "</a></li>";
+						echo '<li style="font-size: 85%"><a href="' . htmlspecialchars($item->link) . '" target="_blank">' . htmlspecialchars($item->title) . "</a></li>";
 					}
 				} else if ($root_element_name  == 'feed') {
-					echo '<summary>' . $xml->title . '</summary>';
+					echo '<summary>' . htmlspecialchars($xml->title) . '</summary>';
 					echo "<ul>";
 					foreach ($xml->entry as $entry) {
-						echo '<li style="font-size: 85%"><a href="' . $entry->link . '">' . $entry->title . "</a></li>";
+						echo '<li style="font-size: 85%"><a href="' . htmlspecialchars($entry->link['href']) . '" target="_blank">' . htmlspecialchars($entry->title) . "</a></li>";
 					}
 				}
 				echo "</ul>";
