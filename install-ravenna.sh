@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [ -x "$(command -v apt)" ]; then
+if [ ! -x "$(command -v apt)" ]; then
         echo "Looks like it's not an Ubuntu- or Debian-based system."
         exit 1
 fi
@@ -50,3 +50,8 @@ cat <<EOF >/etc/apache2/sites-enabled/000-default.conf
 EOF
 
 service apache2 restart
+
+cd /var/www/html/
+git clone https://github.com/dmpop/ravenna.git
+rm index*
+git clone https://github.com/dmpop/ravenna.git .
