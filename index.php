@@ -157,15 +157,19 @@ include 'inc/parsedown.php';
 			$text = "Notes go here. [Markdown](https://www.markdownguide.org/) **is** _supported_.";
 			file_put_contents('note.md', $text);
 		}
-		echo '<input type="radio" name="tabs" id="notes">';
-		echo '<label for="notes">🗒️ Notes</label>';
-		echo '<div class="tab">';
-		$note = file_get_contents('note.md');
-		$Parsedown = new Parsedown();
-		echo $Parsedown->text($note);
-		echo "<div class='text-center'><button onclick=\"location.href='edit.php'\">Edit</button></div>";
-		echo '</div>';
 		?>
+		<input type="radio" name="tabs" id="notes">
+		<label for="notes">🗒️ Notes</label>
+		<div class="tab">
+			<?php
+			$note = file_get_contents('note.md');
+			$Parsedown = new Parsedown();
+			echo $Parsedown->text($note);
+			?>
+			<div class='text-center'>
+				<button onclick="location.href='edit.php'">Edit</button>
+			</div>
+		</div>
 		<!-- Custom tab template START
 	<input type="radio" name="tabs" id="custom_tab">
 	<label for="custom_tab">☕ Custom tab</label>
