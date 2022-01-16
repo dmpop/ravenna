@@ -12,6 +12,6 @@ $links = array(
 );
 $feeds = array(
 	"https://tokyoma.de/rss.xml",
-	"http://dpreview.com/feeds/news/latest"
+	"http://feeds.kottke.org/main",
 );
 $footer = "I really 🧡 <a href='https://www.paypal.com/paypalme/dmpop'>coffee</a>";
