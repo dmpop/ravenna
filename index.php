@@ -129,26 +129,33 @@ include 'inc/parsedown.php';
 		<div class="tab">
 			<div style="margin-bottom: 1.5em;"></div>
 			<?php
+			$refresh = time() - $feed_cache_expire;
 			$array_length = count($feeds);
-			for ($i = 0; $i < $array_length; $i++) {
-				echo "<details>";
-				$xml = simplexml_load_file(str_replace(PHP_EOL, "", $feeds[$i]));
-				$root_element_name = $xml->getName();
-				if ($root_element_name  == 'rss') {
-					echo '<summary>' . htmlspecialchars($xml->channel->title) . '</summary>';
-					echo "<ul>";
-					foreach ($xml->channel->item as $item) {
-						echo '<li style="font-size: 85%"><a href="' . htmlspecialchars($item->link) . '" target="_blank">' . htmlspecialchars($item->title) . "</a></li>";
+			if (!file_exists($feed_cache) || filemtime($feed_cache) < $refresh) {
+				for ($i = 0; $i < $array_length; $i++) {
+					$content .= "<details>";
+					$xml = simplexml_load_file(str_replace(PHP_EOL, "", $feeds[$i]));
+					$root_element_name = $xml->getName();
+					if ($root_element_name  == 'rss') {
+						$content .= '<summary>' . htmlspecialchars($xml->channel->title) . '</summary>';
+						$content .= "<ul>";
+						foreach ($xml->channel->item as $item) {
+							$content .= '<li style="font-size: 85%"><a href="' . htmlspecialchars($item->link) . '" target="_blank">' . htmlspecialchars($item->title) . "</a></li>";
+						}
+					} else if ($root_element_name  == 'feed') {
+						$content .= '<summary>' . htmlspecialchars($xml->title) . '</summary>';
+						$content .= "<ul>";
+						foreach ($xml->entry as $entry) {
+							$content .= '<li style="font-size: 85%"><a href="' . htmlspecialchars($entry->link['href']) . '" target="_blank">' . htmlspecialchars($entry->title) . "</a></li>";
+						}
 					}
-				} else if ($root_element_name  == 'feed') {
-					echo '<summary>' . htmlspecialchars($xml->title) . '</summary>';
-					echo "<ul>";
-					foreach ($xml->entry as $entry) {
-						echo '<li style="font-size: 85%"><a href="' . htmlspecialchars($entry->link['href']) . '" target="_blank">' . htmlspecialchars($entry->title) . "</a></li>";
-					}
+					$content .= "</ul>";
+					$content .= "</details>";
+					file_put_contents($feed_cache, $content);
 				}
-				echo "</ul>";
-				echo "</details>";
+				echo $content;
+			} else {
+				echo file_get_contents($feed_cache);
 			}
 			?>
 		</div>
