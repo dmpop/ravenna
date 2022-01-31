@@ -21,8 +21,8 @@ include 'inc/parsedown.php';
 
 <div>
 	<div style="text-align: center;">
-		<img style="height: 3em; margin-bottom: 1em;" src="favicon.svg" alt="logo" />
-		<h1 style="margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
+		<img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
+		<h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
 		<p>
 			<?php echo $intro; ?>
 		</p>
