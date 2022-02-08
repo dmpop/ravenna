@@ -27,10 +27,12 @@ include('config.php');
 </head>
 
 <body>
+	<div class="text-center">
+		<img style="height: 3em; margin-bottom: 1em;" src="favicon.svg" alt="logo" />
+		<h1 style="margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
+		<button style="margin-bottom: 1em;" onclick="location.href='index.php'">Back</button>
+	</div>
 	<div class="card text-center">
-	<img style="height: 3em; margin-bottom: 1em;" src="favicon.svg" alt="logo" />
-		<h1 style="margin-top: 0em; margin-bottom: .5em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
-		<button onclick="location.href='index.php'">Back</button>
 		<?php
 		function Read()
 		{
