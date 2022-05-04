@@ -26,11 +26,16 @@ include 'inc/parsedown.php';
 		<img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
 		<h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
 		<?php
-		$temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
-		$temp = round($temp / 1000, 1);
-		$cpuusage = 100 - shell_exec("vmstat | tail -1 | awk '{print $15}'");
+		// $temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
+		// $temp = round($temp / 1000, 1);
+		$cpuload = shell_exec("grep -c ^processor /proc/cpuinfo");
 		$mem = shell_exec("free | grep Mem | awk '{print $3/$2 * 100.0}'");
 		$mem = round($mem, 1);
+		$dir = '/';
+		$storage_free = disk_free_space($dir);
+		$storage_total = disk_total_space($dir);
+		$storage_used = $storage_total - $storage_free;
+		$storage_used_p = sprintf('%.2f', ($storage_used / $storage_total) * 100);
 		?>
 		<div class="card" style="margin-top: 2em;">
 			<h4 style="margin-top: 0.5em;">
@@ -44,29 +49,12 @@ include 'inc/parsedown.php';
 			<div class="row">
 				<div class="col-4">
 					<?php
-					if (isset($temp) && is_numeric($temp)) { ?>
-						<div id="tempgauge"></div>
+					if (isset($cpuload)) { ?>
+						<div id="cpuload"></div>
 						<script>
 							var t = new JustGage({
-								id: "tempgauge",
-								value: <?php echo $temp; ?>,
-								min: 0,
-								max: 100,
-								height: 185,
-								width: 185,
-								title: "Temperature",
-								label: "°C"
-							});
-						</script>
-					<?php } ?>
-				</div>
-				<div class="col-4">
-					<?php if (isset($cpuusage) && is_numeric($cpuusage)) { ?>
-						<div id="cpugauge"></div>
-						<script>
-							var u = new JustGage({
-								id: "cpugauge",
-								value: <?php echo $cpuusage; ?>,
+								id: "cpuload",
+								value: <?php echo $cpuload; ?>,
 								min: 0,
 								max: 100,
 								height: 185,
@@ -75,7 +63,6 @@ include 'inc/parsedown.php';
 								label: "%"
 							});
 						</script>
-
 					<?php } ?>
 				</div>
 				<div class="col-4">
@@ -93,6 +80,24 @@ include 'inc/parsedown.php';
 								label: "%"
 							});
 						</script>
+					<?php } ?>
+				</div>
+				<div class="col-4">
+					<?php if (isset($storage_used_p) && is_numeric($storage_used_p)) { ?>
+						<div id="storage_used"></div>
+						<script>
+							var u = new JustGage({
+								id: "storage_used",
+								value: <?php echo $storage_used_p; ?>,
+								min: 0,
+								max: 100,
+								height: 185,
+								width: 185,
+								title: "STORAGE",
+								label: "%"
+							});
+						</script>
+
 					<?php } ?>
 				</div>
 			</div>
