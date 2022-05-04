@@ -28,7 +28,7 @@ include 'inc/parsedown.php';
 		<?php
 		// $temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
 		// $temp = round($temp / 1000, 1);
-		$cpuload = shell_exec("grep -c ^processor /proc/cpuinfo");
+		$cpuload = shell_exec("cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'");
 		$mem = shell_exec("free | grep Mem | awk '{print $3/$2 * 100.0}'");
 		$mem = round($mem, 1);
 		$dir = '/';
@@ -57,10 +57,10 @@ include 'inc/parsedown.php';
 								value: <?php echo $cpuload; ?>,
 								min: 0,
 								max: 100,
-								height: 185,
-								width: 185,
 								title: "CPU",
-								label: "%"
+								label: "%",
+								valueFontColor: "#cc6600",
+								valueFontFamily: "Barlow"
 							});
 						</script>
 					<?php } ?>
@@ -74,10 +74,10 @@ include 'inc/parsedown.php';
 								value: <?php echo $mem; ?>,
 								min: 0,
 								max: 100,
-								height: 185,
-								width: 185,
 								title: "RAM",
-								label: "%"
+								label: "%",
+								valueFontColor: "#cc6600",
+								valueFontFamily: "Barlow"
 							});
 						</script>
 					<?php } ?>
@@ -91,10 +91,10 @@ include 'inc/parsedown.php';
 								value: <?php echo $storage_used_p; ?>,
 								min: 0,
 								max: 100,
-								height: 185,
-								width: 185,
 								title: "STORAGE",
-								label: "%"
+								label: "%",
+								valueFontColor: "#cc6600",
+								valueFontFamily: "Barlow"
 							});
 						</script>
 
