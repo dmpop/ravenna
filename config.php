@@ -2,7 +2,6 @@
 $theme = "dark";
 $title = "Ravenna";
 $password = "secret";
-$intro = "This is <a href='https://github.com/dmpop/ravenna'>Ravenna</a>";
 $key = "";
 $feed_cache = __DIR__ . '/feed_cache.html';
 $feed_cache_expire = 900; // 15 minutes
@@ -18,4 +17,4 @@ $feeds = array(
 	"http://feeds.kottke.org/main",
 );
 
-$footer = "I really 🧡 <a href='https://www.paypal.com/paypalme/dmpop'>coffee</a>";
+$footer = " This is <a href='https://github.com/dmpop/ravenna'>Ravenna</a>. I really 🧡 <a href='https://www.paypal.com/paypalme/dmpop'>coffee</a>";
