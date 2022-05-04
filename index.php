@@ -16,6 +16,8 @@ include 'inc/parsedown.php';
 	<link rel="stylesheet" href="css/tabbox.css">
 	<link rel="stylesheet" href="css/styles.css">
 	<link rel="stylesheet" href="css/themes.css">
+	<script src="js/justgage.js"></script>
+	<script src="js/raphael.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 
@@ -28,19 +30,73 @@ include 'inc/parsedown.php';
 		</p>
 		<?php
 		$uname = shell_exec("uname -mnr");
-		$cpuusage = 100 - shell_exec("vmstat | tail -1 | awk '{print $15}'");
-		$mem = shell_exec("free | grep Mem | awk '{print $3/$2 * 100.0}'");
-		$mem = round($mem, 1);
 		if (isset($uname)) {
 			echo $uname . " ";
 		}
-		if (isset($cpuusage) && is_numeric($cpuusage)) {
-			echo '<span style="color: gray;">CPU load:</span> <strong>' . $cpuusage . '%</strong> ';
-		}
-		if (isset($mem) && is_numeric($mem)) {
-			echo '<span style="color: gray;">Memory:</span> <strong>' . $mem . '%</strong>';
-		}
+		$temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
+		$temp = round($temp / 1000, 1);
+		$cpuusage = 100 - shell_exec("vmstat | tail -1 | awk '{print $15}'");
+		$mem = shell_exec("free | grep Mem | awk '{print $3/$2 * 100.0}'");
+		$mem = round($mem, 1);
 		?>
+		<div class="row">
+			<div class="col-4">
+				<h4 class="bg-light p-1"><?php
+											if (isset($temp) && is_numeric($temp)) { ?>
+						<div id="tempgauge"></div>
+						<script>
+							var t = new JustGage({
+								id: "tempgauge",
+								value: <?php echo $temp; ?>,
+								min: 0,
+								max: 100,
+								height: 220,
+								width: 220,
+								title: "Temperature",
+								label: "°C"
+							});
+						</script>
+					<?php } ?>
+				</h4>
+			</div>
+			<div class="col-4">
+				<h4 class="bg-light p-1"><?php if (isset($cpuusage) && is_numeric($cpuusage)) { ?>
+						<div id="cpugauge"></div>
+						<script>
+							var u = new JustGage({
+								id: "cpugauge",
+								value: <?php echo $cpuusage; ?>,
+								min: 0,
+								max: 100,
+								height: 220,
+								width: 220,
+								title: "CPU",
+								label: "%"
+							});
+						</script>
+
+					<?php } ?>
+				</h4>
+			</div>
+			<div class="col-4">
+				<h4 class="bg-light p-1"><?php if (isset($mem) && is_numeric($mem)) { ?>
+						<div id="memgauge"></div>
+						<script>
+							var u = new JustGage({
+								id: "memgauge",
+								value: <?php echo $mem; ?>,
+								min: 0,
+								max: 100,
+								height: 220,
+								width: 220,
+								title: "RAM",
+								label: "%"
+							});
+						</script>
+					<?php } ?>
+				</h4>
+			</div>
+		</div>
 	</div>
 	<p id="geolocation"></p>
 	<script>
@@ -62,6 +118,8 @@ include 'inc/parsedown.php';
 			document.cookie = "posLon = " + position.coords.longitude;
 		}
 	</script>
+
+	<div style="margin-top: 5em;"></div>
 
 	<div class="tabs">
 		<input type="radio" name="tabs" id="potd" checked="checked">
