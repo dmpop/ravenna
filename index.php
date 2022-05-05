@@ -26,9 +26,8 @@ include 'inc/parsedown.php';
 		<img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
 		<h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
 		<?php
-		// $temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
-		// $temp = round($temp / 1000, 1);
-		$cpuload = shell_exec("cat /proc/stat |grep cpu |tail -1|awk '{print ($5*100)/($2+$3+$4+$5+$6+$7+$8+$9+$10)}'|awk '{print 100-$1}'");
+		$temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
+		$temp = round($temp / 1000, 1);
 		$mem = shell_exec("free | grep Mem | awk '{print $3/$2 * 100.0}'");
 		$mem = round($mem, 1);
 		$dir = '/';
@@ -49,16 +48,16 @@ include 'inc/parsedown.php';
 			<div class="row">
 				<div class="col-4">
 					<?php
-					if (isset($cpuload)) { ?>
-						<div id="cpuload"></div>
+					if (isset($temp)) { ?>
+						<div id="temp"></div>
 						<script>
 							var t = new JustGage({
-								id: "cpuload",
-								value: <?php echo $cpuload; ?>,
+								id: "temp",
+								value: <?php echo $temp; ?>,
 								min: 0,
 								max: 100,
-								title: "CPU",
-								label: "%",
+								title: "TEMP",
+								label: "°C",
 								valueFontColor: "#cc6600",
 								valueFontFamily: "Barlow"
 							});
