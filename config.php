@@ -2,7 +2,7 @@
 $theme = "dark";
 $title = "Ravenna";
 $password = "secret";
-$photo_dir = "photos";
+$photo_dir = "";
 $default_lat = "49.466667";
 $default_lon = "11.000000";
 $feed_cache = __DIR__ . '/feed_cache.html';

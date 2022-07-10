@@ -92,12 +92,21 @@ if (!file_exists($photo_dir)) {
 
 			<div class="tabs">
 				<input type="radio" name="tabs" id="potd" checked="checked">
-				<label for="potd">🖼️ Random photo</label>
+				<label for="potd">🖼️ Photo (of the day)</label>
 				<div class="tab">
 					<div style="margin-top: .5em;"></div>
-					<img style='border-radius: 5px;' src=<?php $photo_dir;
-								$photos = glob($photo_dir . DIRECTORY_SEPARATOR . '*');
-								echo $photos[array_rand($photos)]; ?> />
+					<?php
+					if (empty($photo_dir)) {
+						$request = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
+						$response = file_get_contents($request);
+						$data = json_decode($response, true);
+						echo "<img style='border-radius: 5px;' src='https://bing.com" . $data['images'][0]['url'] . "' />";
+					} else {
+						$photos = glob($photo_dir . DIRECTORY_SEPARATOR . '*');
+						$photo =$photos[array_rand($photos)];
+						echo "<img style='border-radius: 5px;' src='" . $photo . "' />";
+					}
+					?>
 				</div>
 				<?php
 				setcookie("posLat", "", time() - 3600);

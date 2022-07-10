@@ -3,7 +3,7 @@
 Ravenna is a configurable landing page. It acts as a simple dashboard that display the following information:
 
 - basic system info (Processor temperature or uptime, RAM, storage)
-- Random photo
+- Photo of the day from Bing or random photo from a local directory
 - current location (on Android and iOS the link opens in the default map app)
 - sunrise and sunset info
 - links
