@@ -1,6 +1,9 @@
 <?php
 include('config.php');
 include 'inc/parsedown.php';
+if (!file_exists($photo_dir)) {
+	mkdir($dir, 0755, true);
+}
 ?>
 
 <html lang="en" data-theme="<?php echo $theme; ?>">
@@ -89,17 +92,13 @@ include 'inc/parsedown.php';
 
 			<div class="tabs">
 				<input type="radio" name="tabs" id="potd" checked="checked">
-				<label for="potd">🖼️ Photo of the day</label>
+				<label for="potd">🖼️ Random photo</label>
 				<div class="tab">
 					<div style="margin-top: .5em;"></div>
-					<?php
-					$request = "http://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1";
-					$response = file_get_contents($request);
-					$data = json_decode($response, true);
-					echo "<img style='border-radius: 5px;' src='https://bing.com" . $data['images'][0]['url'] . "' />";
-					?>
+					<img style='border-radius: 5px;' src=<?php $photo_dir;
+								$photos = glob($photo_dir . DIRECTORY_SEPARATOR . '*');
+								echo $photos[array_rand($photos)]; ?> />
 				</div>
-
 				<?php
 				setcookie("posLat", "", time() - 3600);
 				setcookie("posLon", "", time() - 3600);
