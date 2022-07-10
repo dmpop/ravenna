@@ -2,7 +2,8 @@
 $theme = "dark";
 $title = "Ravenna";
 $password = "secret";
-$key = "";
+$default_lat = "49.466667";
+$default_lon = "11.000000";
 $feed_cache = __DIR__ . '/feed_cache.html';
 $feed_cache_expire = 900; // 15 minutes
 

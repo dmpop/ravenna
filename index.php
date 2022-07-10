@@ -24,6 +24,7 @@ include 'inc/parsedown.php';
 		<img style="display: inline; height: 2.5em; vertical-align: middle;" src="favicon.svg" alt="logo" />
 		<h1 style="display: inline; margin-left: 0.19em; vertical-align: middle; margin-top: 0em; letter-spacing: 3px; color: #cc6600;"><?php echo $title; ?></h1>
 		<?php
+		$uptime = shell_exec('uptime -p');
 		$temp = shell_exec('cat /sys/class/thermal/thermal_zone*/temp');
 		$temp = round($temp / 1000, 1);
 		$mem = shell_exec("free | grep Mem | awk '{print $3/$2 * 100.0}'");
@@ -35,25 +36,33 @@ include 'inc/parsedown.php';
 		$storage_used_p = sprintf('%.2f', ($storage_used / $storage_total) * 100);
 		?>
 		<div class="card" style="margin-top: 2em;">
-			<h4 style="margin-top: 0.5em;">
+			<h4 style="margin-top: 0.5em; letter-spacing: 3px;">
 				<?php
-				$uname = shell_exec("uname -mnr");
-				if (isset($uname)) {
-					echo $uname . " ";
+				$ip = shell_exec("hostname -i");
+				if (isset($ip)) {
+					echo $ip . " ";
 				} ?>
 			</h4>
 			<hr>
 			<div class="row">
 				<div class="col-4">
-					<h4 style="margin-top: 1em;">TEMPERATURE</h4>
-					<progress max="100" value="<?php echo $temp; ?>"></progress> <?php echo $temp; ?>°C
+					<?php
+					if (!empty($temp)) {
+						echo '<h4 style="margin-top: 1em; letter-spacing: 3px;">TEMPERATURE</h4>';
+						echo "<progress max='100' value='" . $temp . "'></progress>" . $temp . "°C";
+					} else {
+						echo '<h4 style="margin-top: 1em; letter-spacing: 3px;">UPTIME</h4>';
+						echo "<hr style='margin-top:1em;'>";
+						echo trim($uptime, "up ");
+					}
+					?>
 				</div>
 				<div class="col-4">
-					<h4 style="margin-top: 1em;">RAM</h4>
+					<h4 style="margin-top: 1em; letter-spacing: 3px;">RAM</h4>
 					<progress max="100" value="<?php echo $mem; ?>"></progress> <?php echo $mem; ?>% used
 				</div>
 				<div class="col-4">
-					<h4 style="margin-top: 1em;">STORAGE</h4>
+					<h4 style="margin-top: 1em; letter-spacing: 3px;">STORAGE</h4>
 					<progress max="100" value="<?php echo $storage_used_p ?>"></progress> <?php echo $storage_used_p ?>% used
 				</div>
 			</div>
@@ -96,34 +105,31 @@ include 'inc/parsedown.php';
 				setcookie("posLon", "", time() - 3600);
 				$lat = $_COOKIE['posLat'];
 				$lon = $_COOKIE['posLon'];
-				if (!empty($lat) && !empty($lon) && !empty($key)) {
-					echo '<input type="radio" name="tabs" id="weather">';
-					echo '<label for="weather">🌤️ Weather</label>';
-					echo '<div class="tab">';
-					$request = "https://api.openweathermap.org/data/2.5/forecast/daily?lat=$lat&lon=$lon&units=metric&cnt=7&lang=en&units=metric&cnt=7&appid=$key";
-					$response = file_get_contents($request);
-					$data = json_decode($response, true);
-					echo "<h3>" . $data['city']['name'] . "</h3>";
-					echo "<hr>";
-					echo "<table style='margin-top: 1.5em;'>";
-					for ($i = 0; $i <= 6; $i++) {
-						echo "<tr>";
-						echo "<td>";
-						echo ' <span style="color: gray;">' . date("D", strtotime("+ $i day")) . ':</span> ';
-						echo "</td>";
-						echo "<td style='text-align: left'>";
-						echo "<span style='color: #03a9f4;'>" . round($data['list'][$i]['temp']['day'], 0) . "°C</span> ";
-						echo $data['list'][$i]['weather'][0]['description'] . " ";
-						echo "<span style='color: #26a69a;'>" . $data['list'][$i]['speed'] . " m/s</span> ";
-						echo "<span style='color: #ff9800;'>&#8593;" . date("H:i", $data['list'][$i]['sunrise']) . " ";
-						echo "&#8595;" . date("H:i", $data['list'][$i]['sunset']) . "</span>";
-						echo "</td>";
-						echo "</tr>";
-					}
-					echo "</tr>";
-					echo "</table>";
-					echo '</div>';
+				if (empty($lat) && empty($lon)) {
+					$lat = $default_lat;
+					$lon = $default_lon;
 				}
+				echo '<input type="radio" name="tabs" id="sun">';
+				echo '<label for="sun">☀️ Sun</label>';
+				echo '<div class="tab">';
+				echo "<h3><a href='http://www.openstreetmap.org/index.html?mlat=" . $lat . "&mlon=" . $lon . "' target='_blank'>Location</a></h3>";
+				echo "<table style='margin-top: 1.5em;'>";
+				for ($i = 0; $i <= 6; $i++) {
+					$sun_info = date_sun_info(strtotime("today + $i day"), $lat, $lon);
+					echo "<tr>";
+					echo "<td>";
+					echo ' <span style="color: gray;">' . date("D", strtotime("+ $i day")) . ':</span> ';
+					echo "</td>";
+					echo "<td style='text-align: left'>";
+					echo "🌅 <span style='color: #ff9800; letter-spacing: 3px;'>" . date("H:i", $sun_info["sunrise"]) . "</span>";
+					echo "</td>";
+					echo "<td style='text-align: left'>";
+					echo "🌇 <span style='color: #0099ff; letter-spacing: 3px;'>" . date("H:i", $sun_info["sunset"]) . "</span>";
+					echo "</td>";
+					echo "</tr>";
+				}
+				echo "</table>";
+				echo '</div>';
 				?>
 				<input type="radio" name="tabs" id="links">
 				<label for="links">🔗 Links</label>
